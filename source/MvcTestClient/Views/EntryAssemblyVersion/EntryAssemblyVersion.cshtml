@@ -1,0 +1,20 @@
+﻿@model MvcTestClient.Models.EntryAssemblyVersionViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>EntryAssemblyVersionView</title>
+</head>
+<body>
+    <div>
+        <p>Expected assembly version: `2.1.0.0`</p> 
+        <p>Found assembly version: `@Model.ProductVersion`</p> 
+    </div>
+</body>
+</html>

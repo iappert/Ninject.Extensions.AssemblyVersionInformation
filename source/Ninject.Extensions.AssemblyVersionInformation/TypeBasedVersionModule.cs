@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="VersionModule.cs" company="Ninject">
+// <copyright file="TypeBasedVersionModule.cs" company="Ninject">
 //   Copyright (c) 2008-2015
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,29 +24,23 @@ namespace Ninject.Extensions.AssemblyVersionInformation
     using Ninject.Activation;
     using Ninject.Modules;
 
-    [UsedImplicitly]
-    public class VersionModule : NinjectModule
+    public class TypeBasedVersionModule<T> : NinjectModule
     {
         public override void Load()
         {
-            this.Bind<EntryAssemblyVersion>().ToProvider<EntryAssemblyVersionProvider>().InSingletonScope();
+            this.Bind<EntryAssemblyVersion>().ToProvider<IProvider<EntryAssemblyVersion>>().InSingletonScope();
+            this.Bind<IProvider<EntryAssemblyVersion>>().To<TypeBasedVersionProvider<T>>();
         }
 
         [UsedImplicitly]
-        private class EntryAssemblyVersionProvider : Provider<EntryAssemblyVersion>
+        private class TypeBasedVersionProvider<TSource> : Provider<EntryAssemblyVersion>
         {
             protected override EntryAssemblyVersion CreateInstance(IContext context)
             {
-                var fileVersionInfo = GetAssemblyVersionInformationOfEntryAssembly();
+                var assembly = Assembly.GetAssembly(typeof(TSource));
+                var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
 
                 return new EntryAssemblyVersion(fileVersionInfo.ProductVersion);
-            }
-
-            private static FileVersionInfo GetAssemblyVersionInformationOfEntryAssembly()
-            {
-                var assembly = Assembly.GetEntryAssembly();
-
-                return FileVersionInfo.GetVersionInfo(assembly.Location);
             }
         }
     }
