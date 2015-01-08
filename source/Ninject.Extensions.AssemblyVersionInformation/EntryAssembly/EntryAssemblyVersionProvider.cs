@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="SelfExecutingVersionModule.cs" company="Ninject">
+// <copyright file="EntryAssemblyVersionProvider.cs" company="Ninject">
 //   Copyright (c) 2008-2015
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,34 +15,22 @@
 //   limitations under the License.
 // </copyright>
 //-------------------------------------------------------------------------------
-
-namespace Ninject.Extensions.AssemblyVersionInformation
+namespace Ninject.Extensions.AssemblyVersionInformation.EntryAssembly
 {
     using System.Diagnostics;
     using System.Reflection;
     using JetBrains.Annotations;
     using Ninject.Activation;
-    using Ninject.Modules;
 
     [UsedImplicitly]
-    public class SelfExecutingVersionModule : NinjectModule
+    public class EntryAssemblyVersionProvider : Provider<VersionInformation>
     {
-        public override void Load()
+        protected override VersionInformation CreateInstance(IContext context)
         {
-            this.Bind<EntryAssemblyVersion>().ToProvider<IProvider<EntryAssemblyVersion>>().InSingletonScope();
-            this.Bind<IProvider<EntryAssemblyVersion>>().To<EntryAssemblyVersionProvider>();
-        }
+            var assembly = Assembly.GetEntryAssembly();
+            var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
 
-        [UsedImplicitly]
-        private class EntryAssemblyVersionProvider : Provider<EntryAssemblyVersion>
-        {
-            protected override EntryAssemblyVersion CreateInstance(IContext context)
-            {
-                var assembly = Assembly.GetEntryAssembly();
-                var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-
-                return new EntryAssemblyVersion(fileVersionInfo.ProductVersion);
-            }
+            return new VersionInformation(fileVersionInfo.ProductVersion);
         }
     }
 }

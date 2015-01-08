@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="Program.cs" company="Ninject">
+// <copyright file="TypeBasedVersionModule.cs" company="Ninject">
 //   Copyright (c) 2008-2015
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,25 +16,19 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace ConsoleTestClient
+namespace Ninject.Extensions.TypeAssemblyVersionInformation
 {
-    using System;
-    using Ninject;
+    using Ninject.Activation;
     using Ninject.Extensions.AssemblyVersionInformation;
-    using Ninject.Extensions.EntryAssemblyVersionInformation;
+    using Ninject.Extensions.AssemblyVersionInformation.TypeAssembly;
+    using Ninject.Modules;
 
-    public static class Program
+    public class TypeBasedVersionModule<T> : NinjectModule
     {
-        public static void Main(string[] args)
+        public override void Load()
         {
-            var kernel = new StandardKernel(new NinjectSettings() { LoadExtensions = false });
-
-            kernel.Load<EntryAssemblyVersionModule>();
-            var entryAssemblyVersion = kernel.Get<VersionInformation>();
-
-            Console.WriteLine("Expected entry assembly version to be equal to `2.1.0.0`.");
-            Console.WriteLine("Found entry assembly version is equal to `" + entryAssemblyVersion.ProductVersion + "`.");
-            Console.ReadKey();
+            this.Bind<VersionInformation>().ToProvider<IProvider<VersionInformation>>().InSingletonScope();
+            this.Bind<IProvider<VersionInformation>>().To<TypeBasedVersionProvider<T>>();
         }
     }
 }

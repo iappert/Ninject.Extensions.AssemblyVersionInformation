@@ -1,5 +1,5 @@
-﻿//-------------------------------------------------------------------------------
-// <copyright file="UnitTestVersionProvider.cs" company="Ninject">
+//-------------------------------------------------------------------------------
+// <copyright file="TypeBasedVersionProvider.cs" company="Ninject">
 //   Copyright (c) 2008-2015
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,22 +15,22 @@
 //   limitations under the License.
 // </copyright>
 //-------------------------------------------------------------------------------
-namespace Ninject.Extensions.AssemblyVersionInformation
+namespace Ninject.Extensions.AssemblyVersionInformation.TypeAssembly
 {
+    using System.Diagnostics;
+    using System.Reflection;
+    using JetBrains.Annotations;
     using Ninject.Activation;
 
-    public class UnitTestVersionProvider : Provider<EntryAssemblyVersion>
+    [UsedImplicitly]
+    public class TypeBasedVersionProvider<TSource> : Provider<VersionInformation>
     {
-        private readonly string productVersion;
-
-        public UnitTestVersionProvider(string productVersion)
+        protected override VersionInformation CreateInstance(IContext context)
         {
-            this.productVersion = productVersion;
-        }
+            var assembly = Assembly.GetAssembly(typeof(TSource));
+            var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
 
-        protected override EntryAssemblyVersion CreateInstance(IContext context)
-        {
-            return new EntryAssemblyVersion(this.productVersion);
+            return new VersionInformation(fileVersionInfo.ProductVersion);
         }
     }
 }

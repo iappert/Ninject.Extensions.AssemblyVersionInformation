@@ -21,16 +21,16 @@ namespace MvcTestClient.Models
 
     public class EntryAssemblyVersionViewModel
     {
-        private readonly EntryAssemblyVersion entryAssemblyVersion;
+        private readonly VersionInformation versionInformation;
 
-        public EntryAssemblyVersionViewModel(EntryAssemblyVersion entryAssemblyVersion)
+        public EntryAssemblyVersionViewModel(VersionInformation versionInformation)
         {
-            this.entryAssemblyVersion = entryAssemblyVersion;
+            this.versionInformation = versionInformation;
         }
 
         public string ProductVersion
         {
-            get { return this.entryAssemblyVersion.ProductVersion; }
+            get { return this.versionInformation.ProductVersion; }
         }
     }
 }

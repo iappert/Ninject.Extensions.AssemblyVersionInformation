@@ -36,6 +36,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <StyleCopTreatErrorsAsWarnings>false</StyleCopTreatErrorsAsWarnings>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -122,6 +124,10 @@
     <ProjectReference Include="..\Ninject.Extensions.AssemblyVersionInformation\Ninject.Extensions.AssemblyVersionInformation.csproj">
       <Project>{3980A6F3-8D91-4D4F-8676-21AAF88F5CCC}</Project>
       <Name>Ninject.Extensions.AssemblyVersionInformation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ninject.Extensions.TypeAssemblyVersionInformation\Ninject.Extensions.TypeAssemblyVersionInformation.csproj">
+      <Project>{8059EF25-7C34-4AF3-B0FB-6B6E3F4D5C02}</Project>
+      <Name>Ninject.Extensions.TypeAssemblyVersionInformation</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

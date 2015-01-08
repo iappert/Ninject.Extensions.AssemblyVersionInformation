@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="EntryAssemblyVersion.cs" company="Ninject">
+// <copyright file="VersionInformation.cs" company="Ninject">
 //   Copyright (c) 2008-2015
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,9 +19,9 @@ namespace Ninject.Extensions.AssemblyVersionInformation
 {
     using JetBrains.Annotations;
 
-    public struct EntryAssemblyVersion
+    public struct VersionInformation
     {
-        public EntryAssemblyVersion(string productVersion) : this()
+        public VersionInformation(string productVersion) : this()
         {
             this.ProductVersion = productVersion;
         }

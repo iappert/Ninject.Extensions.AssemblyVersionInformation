@@ -9,7 +9,7 @@ namespace MvcTestClient.App_Start
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using MvcTestClient.Controllers;
     using Ninject;
-    using Ninject.Extensions.AssemblyVersionInformation;
+    using Ninject.Extensions.TypeAssemblyVersionInformation;
     using Ninject.Web.Common;
     using Ninject.Web.Mvc;
 

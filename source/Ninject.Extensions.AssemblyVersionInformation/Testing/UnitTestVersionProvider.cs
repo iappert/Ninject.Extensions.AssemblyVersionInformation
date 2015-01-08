@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="Program.cs" company="Ninject">
+// <copyright file="UnitTestVersionProvider.cs" company="Ninject">
 //   Copyright (c) 2008-2015
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,26 +15,24 @@
 //   limitations under the License.
 // </copyright>
 //-------------------------------------------------------------------------------
-
-namespace ConsoleTestClient
+namespace Ninject.Extensions.AssemblyVersionInformation.Testing
 {
-    using System;
-    using Ninject;
-    using Ninject.Extensions.AssemblyVersionInformation;
-    using Ninject.Extensions.EntryAssemblyVersionInformation;
+    using JetBrains.Annotations;
+    using Ninject.Activation;
 
-    public static class Program
+    [UsedImplicitly]
+    public class UnitTestVersionProvider : Provider<VersionInformation>
     {
-        public static void Main(string[] args)
+        private readonly string productVersion;
+
+        public UnitTestVersionProvider(string productVersion)
         {
-            var kernel = new StandardKernel(new NinjectSettings() { LoadExtensions = false });
+            this.productVersion = productVersion;
+        }
 
-            kernel.Load<EntryAssemblyVersionModule>();
-            var entryAssemblyVersion = kernel.Get<VersionInformation>();
-
-            Console.WriteLine("Expected entry assembly version to be equal to `2.1.0.0`.");
-            Console.WriteLine("Found entry assembly version is equal to `" + entryAssemblyVersion.ProductVersion + "`.");
-            Console.ReadKey();
+        protected override VersionInformation CreateInstance(IContext context)
+        {
+            return new VersionInformation(this.productVersion);
         }
     }
 }

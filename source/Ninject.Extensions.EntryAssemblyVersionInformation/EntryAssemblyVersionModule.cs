@@ -1,5 +1,5 @@
 ﻿//-------------------------------------------------------------------------------
-// <copyright file="TypeBasedVersionModule.cs" company="Ninject">
+// <copyright file="EntryAssemblyVersionModule.cs" company="Ninject">
 //   Copyright (c) 2008-2015
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,32 +16,21 @@
 // </copyright>
 //-------------------------------------------------------------------------------
 
-namespace Ninject.Extensions.AssemblyVersionInformation
+namespace Ninject.Extensions.EntryAssemblyVersionInformation
 {
-    using System.Diagnostics;
-    using System.Reflection;
     using JetBrains.Annotations;
     using Ninject.Activation;
+    using Ninject.Extensions.AssemblyVersionInformation;
+    using Ninject.Extensions.AssemblyVersionInformation.EntryAssembly;
     using Ninject.Modules;
 
-    public class TypeBasedVersionModule<T> : NinjectModule
+    [UsedImplicitly]
+    public class EntryAssemblyVersionModule : NinjectModule
     {
         public override void Load()
         {
-            this.Bind<EntryAssemblyVersion>().ToProvider<IProvider<EntryAssemblyVersion>>().InSingletonScope();
-            this.Bind<IProvider<EntryAssemblyVersion>>().To<TypeBasedVersionProvider<T>>();
-        }
-
-        [UsedImplicitly]
-        private class TypeBasedVersionProvider<TSource> : Provider<EntryAssemblyVersion>
-        {
-            protected override EntryAssemblyVersion CreateInstance(IContext context)
-            {
-                var assembly = Assembly.GetAssembly(typeof(TSource));
-                var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
-
-                return new EntryAssemblyVersion(fileVersionInfo.ProductVersion);
-            }
+            this.Bind<VersionInformation>().ToProvider<IProvider<VersionInformation>>().InSingletonScope();
+            this.Bind<IProvider<VersionInformation>>().To<EntryAssemblyVersionProvider>().InTransientScope();
         }
     }
 }
